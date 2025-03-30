@@ -119,10 +119,10 @@ public class FilmControllerTests {
     public void postFilmWithInCorrectReleaseDateBadRequestTest() throws Exception {
         film.setReleaseDate(LocalDate.parse("1895-12-27"));
         String json = mapper.writeValueAsString(film);
-        mockMvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON)
-                        .content(json)).andExpect(status().isBadRequest())
+        mockMvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON).content(json))
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("error",
-                        Matchers.equalTo("Release date can be less than 28/12/1895")));
+                        Matchers.equalTo("Release date should be more or equal 28/12/1895")));
     }
 
     @Test
