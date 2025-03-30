@@ -23,17 +23,15 @@ public class UserController {
         return users;
     }
 
-
     @PostMapping(value = "/users")
     public void create(@Valid @RequestBody User user) {
-        if (users.stream()
-                .anyMatch(k -> k.getEmail().equals(user.getEmail()))) {
-            throw new AlreadyExistException("User account with email " + user.getEmail() + " is already exist.");
+        if (users.stream().anyMatch(k -> k.getEmail().equals(user.getEmail()))) {
+            throw new AlreadyExistException("User account with email " + user.getEmail() + " already exists.");
         }
         checkName(user);
         user.setId(idCounter);
         users.add(user);
-        log.info("Добавлен пользователь с email {}", user.getEmail());
+        log.info("User is added: {}", user);
         idCounter++;
     }
 
@@ -43,22 +41,20 @@ public class UserController {
                 .filter(k -> k.getId().equals(user.getId()))
                 .findFirst();
         if (existedUser.isEmpty()) {
-            throw new NotExistException("User with specified id " + user.getId() + " is not find.");
+            throw new NotExistException("User with id=" + user.getId() + " is not exist.");
         } else {
             checkName(user);
             existedUser.get().setEmail(user.getEmail());
             existedUser.get().setLogin(user.getLogin());
             existedUser.get().setName(user.getName());
             existedUser.get().setBirthday(user.getBirthday());
-            log.info("Обновлен пользователь с email {}", user.getEmail());
+            log.info("User updated: {}", user);
         }
-
     }
 
     private void checkName(User user) {
         if (user.getName() == null || user.getName().isBlank()) {
-            log.warn("В запросе не передано Имя пользователя email {}. В качестве имени будет использован login  {}",
-                    user.getEmail(), user.getLogin());
+            log.warn("Username is empty for user: {}. Email will be used as a login/", user);
             user.setName(user.getLogin());
         }
     }

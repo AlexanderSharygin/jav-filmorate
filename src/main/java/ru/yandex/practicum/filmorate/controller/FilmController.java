@@ -25,22 +25,22 @@ public class FilmController {
         return films;
     }
 
-
     @PostMapping(value = "/films")
     public void addFilm(@Valid @RequestBody Film film) {
         if (films.stream()
                 .anyMatch(k -> k.getName().equals(film.getName())
                         && k.getReleaseDate().equals(film.getReleaseDate()))) {
-            throw new AlreadyExistException("Film with name " + film.getName() + " and release date " + film.getReleaseDate() + " already exists in the DB.");
+            throw new AlreadyExistException("Film with name " + film.getName() + " and release date " +
+                    film.getReleaseDate() + " already exists");
         }
         if (film.getReleaseDate().isBefore(MIN_DATE)) {
-            log.warn("В запросе передана невалидная дата релиза фильма -  {}", film.getReleaseDate());
-            throw new ValidationException("Release date can be less than 28/12/1895");
+            log.warn("Reuqest contains wrong Release Date -  {}", film.getReleaseDate());
+            throw new ValidationException("Release date should be more or equal 28/12/1895");
         }
         film.setId(idCounter);
         films.add(film);
         idCounter++;
-        log.info("Добавлен фильм {} с датой выпуска {}", film.getName(), film.getReleaseDate());
+        log.info("Add new film: {}", film);
     }
 
     @PutMapping(value = "/films")
@@ -49,13 +49,14 @@ public class FilmController {
                 .filter(k -> k.getId().equals(film.getId()))
                 .findFirst();
         if (existedFilm.isEmpty()) {
-            throw new NotExistException("Film with id" + film.getId() + "was not find.");
+            log.info("Film warn id={} is not exist.", film.getId());
+            throw new NotExistException("Film with id=" + film.getId() + " is not exist.");
         } else {
             existedFilm.get().setReleaseDate(film.getReleaseDate());
             existedFilm.get().setDescription(film.getDescription());
             existedFilm.get().setName(film.getName());
             existedFilm.get().setDuration(film.getDuration());
-            log.info("Обновлен фильм {} с датой выпуска {}", film.getName(), film.getReleaseDate());
+            log.info("Film is updated: {}", film.getName());
         }
     }
 }

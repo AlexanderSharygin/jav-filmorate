@@ -6,6 +6,8 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
+import ru.yandex.practicum.filmorate.serializer.LocalDateDeserializer;
+import ru.yandex.practicum.filmorate.serializer.LocalDateSerializer;
 
 import java.time.LocalDate;
 

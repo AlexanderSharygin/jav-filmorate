@@ -60,9 +60,6 @@ public class ExceptionApiHandler {
                 .map(FieldError::getDefaultMessage)
                 .findFirst().get();
         log.warn(message);
-
-       throw new ru.yandex.practicum.filmorate.exception.BadRequestException("Validation exception");
+        throw new ru.yandex.practicum.filmorate.exception.BadRequestException("Validation exception");
     }
-
-
 }
