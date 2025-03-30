@@ -45,7 +45,7 @@ public class FilmControllerTests {
     }
 
     @Test
-    public void testPostFilmCorrectDataSuccess() throws Exception {
+    public void postFilmCorrectDataSuccessTest() throws Exception {
         String json = mapper.writeValueAsString(film);
 
         mockMvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON)
@@ -53,7 +53,7 @@ public class FilmControllerTests {
     }
 
     @Test
-    public void testPostFilmWithDuplicatedNameSuccess() throws Exception {
+    public void postFilmWithDuplicatedNameSuccessTest() throws Exception {
         Film film2 = new Film(0L, "Test test", "Description", LocalDate.parse("1945-05-10"),
                 100);
         String json = mapper.writeValueAsString(film);
@@ -66,7 +66,7 @@ public class FilmControllerTests {
     }
 
     @Test
-    public void testPostFilmWithDuplicatedReleaseDateSuccess() throws Exception {
+    public void postFilmWithDuplicatedReleaseDateSuccessTest() throws Exception {
         Film film2 = new Film(0L, "Test test2", "Description", LocalDate.parse("1945-05-09"),
                 100);
         String json = mapper.writeValueAsString(film);
@@ -79,7 +79,7 @@ public class FilmControllerTests {
     }
 
     @Test
-    public void testPostFilmWithDuplicatedReleaseDateAndNameBadRequest() throws Exception {
+    public void postFilmWithDuplicatedReleaseDateAndNameConflictTest() throws Exception {
         Film film2 = new Film(0L, "Test test", "Description", LocalDate.parse("1945-05-09"),
                 100);
         String json = mapper.writeValueAsString(film);
@@ -92,37 +92,33 @@ public class FilmControllerTests {
     }
 
     @Test
-    public void testPostFilmWith201CharsDescriptionBadRequest() throws Exception {
+    public void postFilmWith201CharsDescriptionBadRequestTest() throws Exception {
         film.setDescription(RandomStringUtils.randomAlphabetic(201));
         String json = mapper.writeValueAsString(film);
-
         mockMvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON)
                 .content(json)).andExpect(status().isBadRequest());
     }
 
     @Test
-    public void testPostFilmWith200CharsDescriptionSuccess() throws Exception {
+    public void postFilmWith200CharsDescriptionSuccessTest() throws Exception {
         film.setDescription(RandomStringUtils.randomAlphabetic(200));
         String json = mapper.writeValueAsString(film);
-
         mockMvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON)
                 .content(json)).andExpect(status().isOk());
     }
 
     @Test
-    public void testPostFilmWithCorrectReleaseDateSuccess() throws Exception {
+    public void postFilmWithCorrectReleaseDateSuccessTest() throws Exception {
         film.setReleaseDate(LocalDate.parse("1895-12-28"));
         String json = mapper.writeValueAsString(film);
-
         mockMvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON)
                 .content(json)).andExpect(status().isOk());
     }
 
     @Test
-    public void testPostFilmWithInCorrectReleaseDateBadRequest() throws Exception {
+    public void postFilmWithInCorrectReleaseDateBadRequestTest() throws Exception {
         film.setReleaseDate(LocalDate.parse("1895-12-27"));
         String json = mapper.writeValueAsString(film);
-
         mockMvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON)
                         .content(json)).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("error",
@@ -130,34 +126,31 @@ public class FilmControllerTests {
     }
 
     @Test
-    public void testPostFilmWithPositiveDurationSuccess() throws Exception {
+    public void postFilmWithPositiveDurationSuccessTest() throws Exception {
         film.setDuration(1);
         String json = mapper.writeValueAsString(film);
-
         mockMvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON)
                 .content(json)).andExpect(status().isOk());
     }
 
     @Test
-    public void testPostFilmWithZeroDurationBadRequest() throws Exception {
+    public void postFilmWithZeroDurationBadRequestTest() throws Exception {
         film.setDuration(0);
         String json = mapper.writeValueAsString(film);
-
         mockMvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON)
                 .content(json)).andExpect(status().isBadRequest());
     }
 
     @Test
-    public void testPostFilmWithZeroNegativeDurationBadRequest() throws Exception {
+    public void postFilmWithZeroNegativeDurationBadRequestTest() throws Exception {
         film.setDuration(-1);
         String json = mapper.writeValueAsString(film);
-
         mockMvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON)
                 .content(json)).andExpect(status().isBadRequest());
     }
 
     @Test
-    public void testPutFilmCorrectDataSuccess() throws Exception {
+    public void putFilmCorrectDataSuccessTest() throws Exception {
         String json = mapper.writeValueAsString(film);
         mockMvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON)
                 .content(json));
@@ -171,7 +164,7 @@ public class FilmControllerTests {
     }
 
     @Test
-    public void testPutFilmSameNameDifferentReleaseDateBadRequest() throws Exception {
+    public void putFilmSameNameDifferentReleaseDateBadRequestTest() throws Exception {
         String json = mapper.writeValueAsString(film);
         mockMvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON)
                 .content(json));
@@ -179,13 +172,12 @@ public class FilmControllerTests {
         film.setDuration(12);
         film.setReleaseDate(LocalDate.parse("1999-02-01"));
         json = mapper.writeValueAsString(film);
-
         mockMvc.perform(put("/films").contentType(MediaType.APPLICATION_JSON)
                 .content(json)).andExpect(status().isNotFound());
     }
 
     @Test
-    public void testPutFilmDifferentNameAndSameReleaseDateBadRequest() throws Exception {
+    public void putFilmDifferentNameAndSameReleaseDateBadRequestTest() throws Exception {
         String json = mapper.writeValueAsString(film);
         mockMvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON)
                 .content(json));
@@ -193,23 +185,20 @@ public class FilmControllerTests {
         film.setDuration(12);
         film.setName("1999-02-01");
         json = mapper.writeValueAsString(film);
-
         mockMvc.perform(put("/films").contentType(MediaType.APPLICATION_JSON)
                 .content(json)).andExpect(status().isNotFound());
     }
 
     @Test
-    public void testGetUsersSuccess() throws Exception {
+    public void getFilmsSuccessTest() throws Exception {
         Film film2 = new Film(0L, "Test test2", "Description", LocalDate.parse("1945-05-09"),
                 100);
         String json = mapper.writeValueAsString(film);
         String json2 = mapper.writeValueAsString(film2);
-
         mockMvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON)
                 .content(json));
         mockMvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON)
                 .content(json2));
-
         mockMvc.perform(get("/films"))
                 .andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(jsonPath("$[0].name", Matchers.equalTo("Test test")))
