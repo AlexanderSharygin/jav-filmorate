@@ -26,7 +26,7 @@ public class FilmController {
     }
 
     @PostMapping(value = "/films")
-    public void addFilm(@Valid @RequestBody Film film) {
+    public Film addFilm(@Valid @RequestBody Film film) {
         if (films.stream()
                 .anyMatch(k -> k.getName().equals(film.getName())
                         && k.getReleaseDate().equals(film.getReleaseDate()))) {
@@ -41,10 +41,12 @@ public class FilmController {
         films.add(film);
         idCounter++;
         log.info("Add new film: {}", film);
+
+        return film;
     }
 
     @PutMapping(value = "/films")
-    public void updateFilm(@Valid @RequestBody Film film) {
+    public Film updateFilm(@Valid @RequestBody Film film) {
         Optional<Film> existedFilm = films.stream()
                 .filter(k -> k.getId().equals(film.getId()))
                 .findFirst();
@@ -57,6 +59,8 @@ public class FilmController {
             existedFilm.get().setName(film.getName());
             existedFilm.get().setDuration(film.getDuration());
             log.info("Film is updated: {}", film.getName());
+
+            return existedFilm.get();
         }
     }
 }

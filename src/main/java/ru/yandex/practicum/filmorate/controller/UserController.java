@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/users")
-    public void create(@Valid @RequestBody User user) {
+    public User create(@Valid @RequestBody User user) {
         if (users.stream().anyMatch(k -> k.getEmail().equals(user.getEmail()))) {
             throw new AlreadyExistException("User account with email " + user.getEmail() + " already exists.");
         }
@@ -33,10 +33,12 @@ public class UserController {
         users.add(user);
         log.info("User is added: {}", user);
         idCounter++;
+
+        return user;
     }
 
     @PutMapping(value = "/users")
-    public void update(@Valid @RequestBody User user) {
+    public User update(@Valid @RequestBody User user) {
         Optional<User> existedUser = users.stream()
                 .filter(k -> k.getId().equals(user.getId()))
                 .findFirst();
@@ -49,6 +51,8 @@ public class UserController {
             existedUser.get().setName(user.getName());
             existedUser.get().setBirthday(user.getBirthday());
             log.info("User updated: {}", user);
+
+            return existedUser.get();
         }
     }
 
