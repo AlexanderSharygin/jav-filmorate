@@ -16,7 +16,7 @@ import java.util.Optional;
 public class UserController {
 
     private final List<User> users = new ArrayList<>();
-    private long idCounter = 1;
+    private long idCounter = 0;
 
     @GetMapping("/users")
     public List<User> getAllUsers() {

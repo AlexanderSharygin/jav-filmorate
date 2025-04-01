@@ -59,11 +59,11 @@ public class UserControllerTests {
         mockMvc.perform(get("/users"))
                 .andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(jsonPath("$[0].name", Matchers.equalTo("u1")))
-                .andExpect(jsonPath("$[0].id", Matchers.equalTo(2)))
+                .andExpect(jsonPath("$[0].id", Matchers.equalTo(1)))
                 .andExpect(jsonPath("$[0].login", Matchers.equalTo("test")))
                 .andExpect(jsonPath("$[0].birthday", Matchers.equalTo("1945-05-09")))
                 .andExpect(jsonPath("$[1].name", Matchers.equalTo("user2")))
-                .andExpect(jsonPath("$[1].id", Matchers.equalTo(3)))
+                .andExpect(jsonPath("$[1].id", Matchers.equalTo(2)))
                 .andExpect(jsonPath("$[1].login", Matchers.equalTo("test2")))
                 .andExpect(jsonPath("$[1].birthday", Matchers.equalTo("1945-10-09")));
     }
@@ -141,7 +141,7 @@ public class UserControllerTests {
                 .content(json));
         user.setName("Test");
         user.setLogin("TestLogin");
-        user.setId(2L);
+        user.setId(1L);
         json = mapper.writeValueAsString(user);
         mockMvc.perform(put("/users").contentType(MediaType.APPLICATION_JSON)
                 .content(json)).andExpect(status().isOk());

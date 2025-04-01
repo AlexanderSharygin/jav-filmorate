@@ -154,7 +154,7 @@ public class FilmControllerTests {
                 .content(json));
         film.setDescription("Upd");
         film.setDuration(12);
-        film.setId(2L);
+        film.setId(1L);
         json = mapper.writeValueAsString(film);
 
         mockMvc.perform(put("/films").contentType(MediaType.APPLICATION_JSON)

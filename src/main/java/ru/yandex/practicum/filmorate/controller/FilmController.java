@@ -16,8 +16,7 @@ import java.util.Optional;
 @Slf4j
 public class FilmController {
     private final List<Film> films = new ArrayList<>();
-    private long idCounter = 1;
-    private static final LocalDate MIN_DATE = LocalDate.of(1895, 12, 28);
+    private long idCounter = 0;
 
     @GetMapping("/films")
     public List<Film> getAllFilms() {
