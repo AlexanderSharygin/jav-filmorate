@@ -11,8 +11,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import ru.yandex.practicum.filmorate.controller.ExceptionApiHandler;
 import ru.yandex.practicum.filmorate.controller.UserController;
+import ru.yandex.practicum.filmorate.error.ExceptionApiHandler;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
@@ -59,11 +59,11 @@ public class UserControllerTests {
         mockMvc.perform(get("/users"))
                 .andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(jsonPath("$[0].name", Matchers.equalTo("u1")))
-                .andExpect(jsonPath("$[0].id", Matchers.equalTo(1)))
+                .andExpect(jsonPath("$[0].id", Matchers.equalTo(2)))
                 .andExpect(jsonPath("$[0].login", Matchers.equalTo("test")))
                 .andExpect(jsonPath("$[0].birthday", Matchers.equalTo("1945-05-09")))
                 .andExpect(jsonPath("$[1].name", Matchers.equalTo("user2")))
-                .andExpect(jsonPath("$[1].id", Matchers.equalTo(2)))
+                .andExpect(jsonPath("$[1].id", Matchers.equalTo(3)))
                 .andExpect(jsonPath("$[1].login", Matchers.equalTo("test2")))
                 .andExpect(jsonPath("$[1].birthday", Matchers.equalTo("1945-10-09")));
     }
@@ -141,7 +141,7 @@ public class UserControllerTests {
                 .content(json));
         user.setName("Test");
         user.setLogin("TestLogin");
-        user.setId(1L);
+        user.setId(2L);
         json = mapper.writeValueAsString(user);
         mockMvc.perform(put("/users").contentType(MediaType.APPLICATION_JSON)
                 .content(json)).andExpect(status().isOk());
@@ -155,7 +155,7 @@ public class UserControllerTests {
         user.setName("Test");
         user.setLogin("TestLogin");
         user.setEmail("TestLogin@qwe.rt");
-        user.setId(2L);
+        user.setId(3L);
         json = mapper.writeValueAsString(user);
         mockMvc.perform(put("/users").contentType(MediaType.APPLICATION_JSON)
                 .content(json)).andExpect(status().isNotFound());

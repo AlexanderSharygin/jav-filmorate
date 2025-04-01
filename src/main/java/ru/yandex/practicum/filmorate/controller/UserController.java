@@ -29,10 +29,10 @@ public class UserController {
             throw new AlreadyExistException("User account with email " + user.getEmail() + " already exists.");
         }
         checkName(user);
+        idCounter++;
         user.setId(idCounter);
         users.add(user);
         log.info("User is added: {}", user);
-        idCounter++;
 
         return user;
     }

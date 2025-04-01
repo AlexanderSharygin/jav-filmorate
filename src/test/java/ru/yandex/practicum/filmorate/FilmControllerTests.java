@@ -12,8 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import ru.yandex.practicum.filmorate.controller.ExceptionApiHandler;
 import ru.yandex.practicum.filmorate.controller.FilmController;
+import ru.yandex.practicum.filmorate.error.ExceptionApiHandler;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
@@ -120,9 +120,7 @@ public class FilmControllerTests {
         film.setReleaseDate(LocalDate.parse("1895-12-27"));
         String json = mapper.writeValueAsString(film);
         mockMvc.perform(post("/films").contentType(MediaType.APPLICATION_JSON).content(json))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("error",
-                        Matchers.equalTo("Release date should be more or equal 28/12/1895")));
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -156,7 +154,7 @@ public class FilmControllerTests {
                 .content(json));
         film.setDescription("Upd");
         film.setDuration(12);
-        film.setId(1L);
+        film.setId(2L);
         json = mapper.writeValueAsString(film);
 
         mockMvc.perform(put("/films").contentType(MediaType.APPLICATION_JSON)

@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.AlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.NotExistException;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
@@ -33,13 +32,9 @@ public class FilmController {
             throw new AlreadyExistException("Film with name " + film.getName() + " and release date " +
                     film.getReleaseDate() + " already exists");
         }
-        if (film.getReleaseDate().isBefore(MIN_DATE)) {
-            log.warn("Reuqest contains wrong Release Date -  {}", film.getReleaseDate());
-            throw new ValidationException("Release date should be more or equal 28/12/1895");
-        }
+        idCounter++;
         film.setId(idCounter);
         films.add(film);
-        idCounter++;
         log.info("Add new film: {}", film);
 
         return film;
