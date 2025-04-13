@@ -13,6 +13,8 @@ import ru.yandex.practicum.filmorate.serializer.LocalDateSerializer;
 import ru.yandex.practicum.filmorate.validator.MinDateValue;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -30,4 +32,14 @@ public class Film {
     private LocalDate releaseDate;
     @Min(1)
     private long duration;
+    private Set<Long> likeUsers;
+
+    public Film(Long id, String name, String description, LocalDate releaseDate, long duration) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+        this.likeUsers = new HashSet<>();
+    }
 }

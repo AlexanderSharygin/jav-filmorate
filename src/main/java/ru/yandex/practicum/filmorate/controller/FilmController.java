@@ -2,58 +2,59 @@ package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.AlreadyExistException;
-import ru.yandex.practicum.filmorate.exception.NotExistException;
+import ru.yandex.practicum.filmorate.exception.BadRequestException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @Slf4j
 public class FilmController {
-    private final List<Film> films = new ArrayList<>();
-    private long idCounter = 0;
+    private final FilmService filmService;
+
+    @Autowired
+    public FilmController(FilmService filmService) {
+        this.filmService = filmService;
+    }
 
     @GetMapping("/films")
     public List<Film> getAllFilms() {
-        return films;
+        return filmService.getAll();
+    }
+
+    @GetMapping(value = "/films/popular")
+    public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") int count) {
+        if (count <= 0) {
+            throw new BadRequestException("count");
+        }
+        return filmService.getMostPopularFilms(count);
+    }
+
+    @GetMapping("/films/{id}")
+    public Film getFilmById(@PathVariable("id") long filmId) {
+        return filmService.getById(filmId);
     }
 
     @PostMapping(value = "/films")
     public Film addFilm(@Valid @RequestBody Film film) {
-        if (films.stream()
-                .anyMatch(k -> k.getName().equals(film.getName())
-                        && k.getReleaseDate().equals(film.getReleaseDate()))) {
-            throw new AlreadyExistException("Film with name " + film.getName() + " and release date " +
-                    film.getReleaseDate() + " already exists");
-        }
-        idCounter++;
-        film.setId(idCounter);
-        films.add(film);
-        log.info("Add new film: {}", film);
-
-        return film;
+        return filmService.addFilm(film);
     }
 
     @PutMapping(value = "/films")
     public Film updateFilm(@Valid @RequestBody Film film) {
-        Optional<Film> existedFilm = films.stream()
-                .filter(k -> k.getId().equals(film.getId()))
-                .findFirst();
-        if (existedFilm.isEmpty()) {
-            log.info("Film warn id={} is not exist.", film.getId());
-            throw new NotExistException("Film with id=" + film.getId() + " is not exist.");
-        } else {
-            existedFilm.get().setReleaseDate(film.getReleaseDate());
-            existedFilm.get().setDescription(film.getDescription());
-            existedFilm.get().setName(film.getName());
-            existedFilm.get().setDuration(film.getDuration());
-            log.info("Film is updated: {}", film.getName());
+        return filmService.updateFilm(film);
+    }
 
-            return existedFilm.get();
-        }
+    @PutMapping(value = "/films/{id}/like/{userId}")
+    public void setLike(@PathVariable("id") long filmId, @PathVariable long userId) {
+        filmService.addLike(filmId, userId);
+    }
+
+    @DeleteMapping(value = "/films/{id}/like/{userId}")
+    public void removeLike(@PathVariable("id") long filmId, @PathVariable long userId) {
+        filmService.removeLike(filmId, userId);
     }
 }
