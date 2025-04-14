@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.model;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import ru.yandex.practicum.filmorate.serializer.LocalDateDeserializer;
 import ru.yandex.practicum.filmorate.serializer.LocalDateSerializer;
@@ -13,7 +12,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@AllArgsConstructor
 public class User {
     private Long id;
     private String name;
@@ -33,7 +31,7 @@ public class User {
     private Set<Long> friends;
 
 
-    public User(Long id,String name, String login, String email,  LocalDate birthday) {
+    public User(Long id, String name, String login, String email, LocalDate birthday) {
         this.id = id;
         this.login = login;
         this.name = name;

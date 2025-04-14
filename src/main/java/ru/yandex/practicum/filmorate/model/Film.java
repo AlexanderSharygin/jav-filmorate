@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import ru.yandex.practicum.filmorate.serializer.LocalDateDeserializer;
@@ -17,7 +16,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@AllArgsConstructor
 public class Film {
     private Long id;
     @NotNull

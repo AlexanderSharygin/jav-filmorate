@@ -4,9 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.AlreadyExistException;
+import ru.yandex.practicum.filmorate.exception.NoContentException;
 import ru.yandex.practicum.filmorate.exception.NotExistException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.storage.Storage;
 
 import java.util.ArrayList;
@@ -107,7 +107,7 @@ public class UserService {
             friend.get().getFriends().remove(userId);
             log.info("User with id {} removed user with id {} from friends list", userId, friendId);
         } else {
-            throw new AlreadyExistException("User with id " + userId + " has not friend with user " + friendId);
+            throw new NoContentException("User with id " + userId + " is not friend for user " + friendId);
         }
     }
 

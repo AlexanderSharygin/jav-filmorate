@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.yandex.practicum.filmorate.exception.AlreadyExistException;
+import ru.yandex.practicum.filmorate.exception.NoContentException;
 import ru.yandex.practicum.filmorate.exception.NotExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 
@@ -30,6 +31,14 @@ public class ExceptionApiHandler {
     public ErrorResponse entityIsAlreadyExist(AlreadyExistException exception) {
         log.warn(exception.getMessage());
         return new ErrorResponse(exception.getMessage(), "Entity is already exist!");
+
+    }
+
+    @ExceptionHandler(NoContentException.class)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ErrorResponse entityIsNotFound(NoContentException exception) {
+        log.warn(exception.getMessage());
+        return new ErrorResponse(exception.getMessage(), "Entity is not found!");
 
     }
 

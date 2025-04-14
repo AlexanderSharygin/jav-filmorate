@@ -6,7 +6,6 @@ import ru.yandex.practicum.filmorate.exception.AlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.NotExistException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +23,7 @@ public class InMemoryUserStorage implements Storage<User> {
 
     @Override
     public Optional<User> getById(long id) {
-       return Optional.ofNullable(users.get(id));
+        return Optional.ofNullable(users.get(id));
 
     }
 
@@ -40,8 +39,6 @@ public class InMemoryUserStorage implements Storage<User> {
 
         return user;
     }
-
-
 
 
     @Override
