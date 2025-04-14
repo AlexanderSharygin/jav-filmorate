@@ -33,10 +33,10 @@ public class UserController {
         return userService.getUserById(usersId);
     }
 
-  /*  @GetMapping("/users/{id}/friends/common/{otherId}")
+    @GetMapping("/users/{id}/friends/common/{otherId}")
     public List<User> getCommonFriends(@PathVariable("id") long id, @PathVariable("otherId") long friendId) {
         return userService.getCommonFriends(id, friendId);
-    }*/
+    }
 
     @PostMapping(value = "/users")
     public User addUser(@Valid @RequestBody User user) {
