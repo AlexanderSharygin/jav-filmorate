@@ -28,8 +28,6 @@ public class User {
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate birthday;
-    private Set<Long> friends;
-
 
     public User(Long id, String name, String login, String email, LocalDate birthday) {
         this.id = id;
@@ -37,6 +35,5 @@ public class User {
         this.name = name;
         this.email = email;
         this.birthday = birthday;
-        this.friends = new HashSet<>();
     }
 }
