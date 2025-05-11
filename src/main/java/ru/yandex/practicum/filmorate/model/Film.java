@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.NonNull;
 import org.hibernate.validator.constraints.Length;
 import ru.yandex.practicum.filmorate.serializer.LocalDateDeserializer;
 import ru.yandex.practicum.filmorate.serializer.LocalDateSerializer;
