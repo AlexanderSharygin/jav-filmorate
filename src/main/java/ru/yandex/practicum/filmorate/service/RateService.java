@@ -23,7 +23,7 @@ public class RateService {
                 .orElseThrow(() -> new NotExistException("MPA with id " + id + " not exists in the DB"));
     }
 
-    public List<Rate> getAllMpa() {
+    public List<Rate> getRates() {
         return rateRepository.findAll();
     }
 }

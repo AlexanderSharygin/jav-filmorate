@@ -12,11 +12,6 @@ import java.util.Optional;
 @Component
 public class FilmRepository extends BaseRepository {
 
-    @Autowired
-    public FilmRepository(JdbcTemplate jdbcTemplate, RowMapper<Film> mapper) {
-        super(jdbcTemplate, mapper, Film.class);
-    }
-
     private static final String SQL_GET_FILM = "SELECT f.id AS film_id, f.name, f.description , f.release_date, " +
             "f.duration, f.rate_id AS RATE_ID, r.name AS RATE_NAME " +
             "FROM films f LEFT JOIN rates r on f.rate_id = r.id WHERE f.id = ?";
@@ -28,16 +23,18 @@ public class FilmRepository extends BaseRepository {
             "FROM films f LEFT JOIN rates r ON f.rate_id = r.id";
     private static final String SQL_INSERT_FILM = "INSERT INTO films (name, description, release_date, duration, rate_id) " +
             "VALUES(?, ?, ?, ?, ?)";
-
     private static final String SQL_UPDATE_FILM = "UPDATE FILMS " +
             "SET name=?, description=?, release_date=?, duration=?, rate_id=? WHERE id=?";
-
     private static final String SQL_GET_POPULAR_FILMS = "SELECT f.id AS film_id, f.name, f.description, f.release_date, " +
             "f.duration, f.rate_id AS mpa_id, r.name AS mpa_name " +
             "FROM films f LEFT JOIN rates r ON f.rate_id = r.id " +
             "LEFT JOIN (SELECT film_id, COUNT(film_id) AS likes_count FROM likes GROUP BY film_id) l " +
             " ON f.id = l.film_id ORDER BY likes_count DESC LIMIT ?";
 
+    @Autowired
+    public FilmRepository(JdbcTemplate jdbcTemplate, RowMapper<Film> mapper) {
+        super(jdbcTemplate, mapper, Film.class);
+    }
 
     public Optional<Film> findById(Long filmId) {
         return findOne(SQL_GET_FILM, filmId);

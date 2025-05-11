@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.BadRequestException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.service.LikeService;
 
 import java.util.List;
 
@@ -13,27 +14,22 @@ import java.util.List;
 public class FilmController {
     private final FilmService filmService;
 
+    private final LikeService likeService;
+
     @Autowired
-    public FilmController(FilmService filmService) {
+    public FilmController(FilmService filmService, LikeService likeService) {
         this.filmService = filmService;
-    }
-
-    @GetMapping("/films")
-    public List<Film> getAllFilms() {
-        return filmService.getAll();
-    }
-
-    @GetMapping(value = "/films/popular")
-    public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") int count) {
-        if (count <= 0) {
-            throw new BadRequestException("count");
-        }
-        return filmService.getMostPopularFilms(count);
+        this.likeService = likeService;
     }
 
     @GetMapping("/films/{id}")
     public Film getFilmById(@PathVariable("id") long filmId) {
         return filmService.getFilmById(filmId);
+    }
+
+    @GetMapping("/films")
+    public List<Film> getAllFilms() {
+        return filmService.getAll();
     }
 
     @PostMapping(value = "/films")
@@ -46,13 +42,22 @@ public class FilmController {
         return filmService.updateFilm(film);
     }
 
-   /* @PutMapping(value = "/films/{id}/like/{userId}")
-    public void setLike(@PathVariable("id") long filmId, @PathVariable long userId) {
-        filmService.addLike(filmId, userId);
+    @PutMapping("/films/{id}/like/{userId}")
+    public boolean addLike(@PathVariable("id") Long filmId, @PathVariable("userId") long userId) {
+        return likeService.addLike(filmId, userId);
     }
 
-    @DeleteMapping(value = "/films/{id}/like/{userId}")
-    public void removeLike(@PathVariable("id") long filmId, @PathVariable long userId) {
-        filmService.removeLike(filmId, userId);
-    }*/
+    @DeleteMapping("/films/{id}/like/{userId}")
+    public boolean removeLike(@PathVariable("id") Long filmId, @PathVariable("userId") long userId) {
+        return likeService.removeLike(filmId, userId);
+    }
+
+    @GetMapping(value = "/films/popular")
+    public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") int count) {
+        if (count <= 0) {
+            throw new BadRequestException("count");
+        }
+
+        return filmService.getMostPopularFilms(count);
+    }
 }
