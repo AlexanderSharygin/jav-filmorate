@@ -15,7 +15,7 @@ public class GenreFilmRepository extends BaseRepository {
     }
 
     public void addForFilm(Long filmId, Long genreId) {
-        update(SQL_INSERT_GENRE, genreId, filmId);
+        insert(SQL_INSERT_GENRE, genreId, filmId);
     }
 
     public void removeForFilm(Long filmId) {

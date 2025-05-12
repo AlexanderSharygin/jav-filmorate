@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
@@ -8,10 +9,8 @@ import lombok.NonNull;
 @AllArgsConstructor
 public class Genre {
 
-    @NonNull
+    @NotNull
     Long id;
-
-    @NonNull
     String name;
 
     public Genre() {

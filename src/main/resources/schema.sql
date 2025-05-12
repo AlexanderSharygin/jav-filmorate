@@ -45,30 +45,14 @@ create table if not exists RATES
 
 create table if not exists FILMS
 (
-    ID
-    BIGINT
-    auto_increment
-    primary
-    key,
-    NAME
-    CHARACTER
-    VARYING
-(
-    50
-) not null,
-    DESCRIPTION CHARACTER VARYING
-(
-    200
-) not null,
+    ID   BIGINT auto_increment  primary  key,
+    NAME CHARACTER
+    VARYING(50) not null,
+    DESCRIPTION CHARACTER VARYING(200) not null,
     RELEASE_DATE DATE not null,
     DURATION INTEGER not null,
-    RATE_ID BIGINT not null,
-    constraint FILMS_UNIQUE
-    unique
-(
-    NAME,
-    RELEASE_DATE
-),
+    RATE_ID BIGINT,
+
     constraint FILMS_FK
     foreign key
 (
@@ -181,7 +165,7 @@ create table if not exists LIKES
 
 create table if not exists USERS_USERS
 (
-    USERS_ID
+    USER_ID
     BIGINT
     not
     null,
@@ -198,13 +182,13 @@ create table if not exists USERS_USERS
     primary
     key
 (
-    USERS_ID,
+    USER_ID,
     FRIEND_ID
 ),
     constraint USERS_USERS_FK
     foreign key
 (
-    USERS_ID
+    USER_ID
 ) references USERS
     on update cascade
     on delete cascade,
@@ -226,7 +210,7 @@ create table if not exists USERS_USERS
 (
     "USERS_USERS"
     .
-    "USERS_ID"
+    "USER_ID"
     <>
     "USERS_USERS"
     .

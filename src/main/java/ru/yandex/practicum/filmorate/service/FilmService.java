@@ -2,13 +2,12 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dal.FilmRepository;
 import ru.yandex.practicum.filmorate.dal.GenreFilmRepository;
 import ru.yandex.practicum.filmorate.dal.GenreRepository;
+import ru.yandex.practicum.filmorate.dal.RateRepository;
 import ru.yandex.practicum.filmorate.exception.AlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.NotExistException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -26,13 +25,15 @@ public class FilmService {
     private final FilmRepository filmRepository;
     private final GenreRepository genreRepository;
     private final GenreFilmRepository genreFilmRepository;
+    private final RateRepository rateRepository;
 
     @Autowired
     public FilmService(FilmRepository filmRepository, GenreRepository genreRepository, GenreFilmRepository
-            genreFilmRepository) {
+            genreFilmRepository, RateRepository rateRepository) {
         this.filmRepository = filmRepository;
         this.genreRepository = genreRepository;
         this.genreFilmRepository = genreFilmRepository;
+        this.rateRepository = rateRepository;
     }
 
     public Film getFilmById(long id) {
@@ -53,11 +54,14 @@ public class FilmService {
 
     public Film addFilm(Film film) {
         Film createdFilm;
-        try {
-            filmRepository.add(film);
-        } catch (DataIntegrityViolationException e) {
-            throw new AlreadyExistException("Mpa rate with specified id not exists in the DB");
-        }
+        rateRepository.findById(film.getMpa().getId())
+                .orElseThrow(() -> new NotExistException("Rate with id " + film.getMpa().getId() +
+                        " not exists in the DB"));
+        List<Long> genreIds = film.getGenres().stream().map(Genre::getId).toList();
+        genreIds.forEach(k -> genreRepository.findById(k)
+                .orElseThrow(() -> new NotExistException("Genre with id " + k + " not exists in the DB")));
+
+        filmRepository.add(film);
         createdFilm = filmRepository.findNew().orElseThrow(
                 () -> new AlreadyExistException("Film already exists in the DB"));
         addGenresForFilm(film, createdFilm.getId());
@@ -67,12 +71,9 @@ public class FilmService {
     }
 
     public Film updateFilm(Film film) {
-        try {
-            genreFilmRepository.removeForFilm(film.getId());
-            filmRepository.update(film);
-        } catch (EmptyResultDataAccessException e) {
-            throw new NotExistException("Film with id " + film.getId() + " not exists in the DB");
-        }
+        filmRepository.findById(film.getId())
+                .orElseThrow(() -> new NotExistException("User with id " + film.getId() + " not exists in the DB"));
+        filmRepository.update(film);
         Film updatedFilm = getFilmById(film.getId());
         addGenresForFilm(film, updatedFilm.getId());
         updatedFilm.setGenres(genreRepository.findByFilmId(film.getId()));

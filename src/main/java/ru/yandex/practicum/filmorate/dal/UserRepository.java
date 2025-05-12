@@ -18,9 +18,9 @@ public class UserRepository extends BaseRepository<User> {
     private static final String SQL_UPDATE_USER = "UPDATE users SET name =?, email=?, birthday=?, login=? " +
             "WHERE user_id=?";
     private static final String SQL_GET_FRIENDS_FOR_USER = "SELECT * FROM users WHERE user_id IN" +
-            " (SELECT friend_id FROM users_users WHERE users_id=?)";
+            " (SELECT friend_id FROM users_users WHERE user_id=?)";
     private static final String SQL_GET_COMMON_FRIENDS = "SELECT * FROM users u WHERE user_id IN " +
-            "(SELECT friend_id  FROM users_users WHERE users_id = ? OR users_id  = ? " +
+            "(SELECT friend_id  FROM users_users WHERE user_id = ? OR user_id  = ? " +
             "GROUP BY friend_id HAVING COUNT (friend_id) = 2)";
 
 

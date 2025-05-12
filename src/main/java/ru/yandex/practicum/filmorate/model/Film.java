@@ -33,9 +33,8 @@ public class Film {
     @Min(1)
     private Integer duration;
     private Set<Long> likeUsers;
-    @NotNull
     private List<Genre> genres;
-    private Rate rate;
+    private Rate mpa;
 
     public Film(Long id, String name, String description, LocalDate releaseDate, Integer duration) {
         this.id = id;
@@ -48,6 +47,6 @@ public class Film {
 
     public Film() {
         this.genres = new ArrayList<>();
-        rate = new Rate();
+        mpa = new Rate();
     }
 }

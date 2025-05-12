@@ -45,6 +45,8 @@ public class UserService {
     }
 
     public User updateUser(User user) {
+        userRepository.findById(user.getId())
+                .orElseThrow(() -> new NotExistException("User with id " + user.getId() + " not exists in the DB"));
         checkName(user);
         try {
             userRepository.update(user);

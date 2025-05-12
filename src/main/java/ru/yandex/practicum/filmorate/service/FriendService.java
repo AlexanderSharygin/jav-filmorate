@@ -12,6 +12,7 @@ import ru.yandex.practicum.filmorate.model.Friend;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Slf4j
@@ -52,15 +53,20 @@ public class FriendService {
     }
 
     public boolean removeFriend(long userId, long friendId) {
-        Friend friend = friendRepository
-                .find(userId, friendId)
-                .orElseThrow(() -> new NotExistException("User with id " + friendId + "is not a friend for " + userId));
-        friendRepository.remove(friend.getUserId(), friend.getFriendId());
-
-        return true;
+        userRepository.findById(userId).orElseThrow(() -> new NotExistException("User are not exist in the DB"));
+        userRepository.findById(friendId).orElseThrow(() -> new NotExistException("User are not exist in the DB"));
+        try {
+            Friend friend = friendRepository.find(userId, friendId).get();
+            friendRepository.remove(friend.getUserId(), friend.getFriendId());
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
     }
 
     public List<User> getFriendsForUser(long userId) {
+        userRepository.findById(userId)
+                .orElseThrow(() -> new NotExistException("User are not exist in the DB"));
         return userRepository.findFriends(userId);
     }
 

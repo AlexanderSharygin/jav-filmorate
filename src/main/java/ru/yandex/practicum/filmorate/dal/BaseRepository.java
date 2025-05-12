@@ -29,7 +29,7 @@ public class BaseRepository<T> {
     }
 
     protected List<T> findMany(String query, Object... params) {
-        return jdbc.queryForList(query, entityType, params);
+        return jdbc.query(query, mapper, params);
     }
 
     protected long insert(String query, Object... params) {
@@ -43,7 +43,15 @@ public class BaseRepository<T> {
             return ps;
         }, keyHolder);
 
-        Long id = keyHolder.getKeyAs(Long.class);
+        Long id;
+        if (keyHolder.getKeys().size() > 1) {
+            id = keyHolder.getKeys().values().stream()
+                    .findFirst()
+                    .map(v -> ((Number) v).longValue())
+                    .orElseThrow(() -> new IllegalStateException("No key found"));
+        } else {
+            id = keyHolder.getKeyAs(Long.class);
+        }
         if (id != null) {
             return id;
         } else {

@@ -25,11 +25,12 @@ public class FilmRepository extends BaseRepository {
             "VALUES(?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_FILM = "UPDATE FILMS " +
             "SET name=?, description=?, release_date=?, duration=?, rate_id=? WHERE id=?";
-    private static final String SQL_GET_POPULAR_FILMS = "SELECT f.id AS film_id, f.name, f.description, f.release_date, " +
-            "f.duration, f.rate_id AS mpa_id, r.name AS mpa_name " +
-            "FROM films f LEFT JOIN rates r ON f.rate_id = r.id " +
-            "LEFT JOIN (SELECT film_id, COUNT(film_id) AS likes_count FROM likes GROUP BY film_id) l " +
-            " ON f.id = l.film_id ORDER BY likes_count DESC LIMIT ?";
+    private static final String SQL_GET_POPULAR_FILMS = "SELECT f.ID AS film_id, f.NAME, f.DESCRIPTION, f.RELEASE_DATE, " +
+            "f.DURATION, f.RATE_ID, m.NAME AS RATE_NAME FROM FILMS f " +
+            "LEFT JOIN RATES m ON f.RATE_ID = m.ID " +
+            "LEFT JOIN (SELECT FILM_ID, COUNT(FILM_ID) AS likes_count FROM LIKES GROUP BY FILM_ID) l ON " +
+            "f.ID = l.FILM_ID ORDER BY COALESCE(l.likes_count, 0) DESC " +
+            "LIMIT ?";
 
     @Autowired
     public FilmRepository(JdbcTemplate jdbcTemplate, RowMapper<Film> mapper) {
@@ -50,16 +51,16 @@ public class FilmRepository extends BaseRepository {
 
     public void add(Film value) {
         insert(SQL_INSERT_FILM, value.getName(), value.getDescription(), value.getReleaseDate(),
-                value.getDuration(), value.getRate().getId());
+                value.getDuration(), value.getMpa().getId());
     }
 
     public void update(Film film) {
         update(SQL_UPDATE_FILM, film.getName(), film.getDescription(), film.getReleaseDate(),
-                film.getDuration(), film.getRate().getId(), film.getId());
+                film.getDuration(), film.getMpa().getId(), film.getId());
     }
 
-    public List<Film> findPopulars(Integer count) {
-        return findMany(SQL_GET_FILMS, count);
+    public List<Film> findPopulars(int count) {
+        return findMany(SQL_GET_POPULAR_FILMS, count);
     }
 
 }

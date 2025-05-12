@@ -14,11 +14,12 @@ import java.util.Optional;
 public class RateRepository extends BaseRepository {
 
 
-    private static final String SQL_GET_MPA = "SELECT id, name FROM RATES WHERE id=? ";
+    private static final String SQL_GET_MPA = "SELECT id, name FROM rates WHERE id=?";
+
     private static final String SQL_GET_MPAs = "SELECT id, name FROM RATES";
 
     @Autowired
-    public RateRepository(JdbcTemplate jdbcTemplate, RowMapper<Film> mapper) {
+    public RateRepository(JdbcTemplate jdbcTemplate, RowMapper<Rate> mapper) {
         super(jdbcTemplate, mapper, Rate.class);
     }
 

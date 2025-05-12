@@ -20,12 +20,12 @@ public class LikeRepository extends BaseRepository {
 
 
     @Autowired
-    public LikeRepository(JdbcTemplate jdbcTemplate, RowMapper<Film> mapper) {
+    public LikeRepository(JdbcTemplate jdbcTemplate, RowMapper<Like> mapper) {
         super(jdbcTemplate, mapper, Like.class);
     }
 
     public Optional<Like> find(Long filmId, Long userId) {
-        return findOne(SQL_GET_LIKE);
+        return findOne(SQL_GET_LIKE, userId, filmId);
     }
 
     public void add(Long filmId, Long userId) {
