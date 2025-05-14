@@ -2,8 +2,8 @@
 Template repository for Filmorate project.
 
 Схема базы данных:
-![image](https://github.com/user-attachments/assets/e48aea2f-7395-46a9-8d0b-d5ff97ba50e9)
 
+![alt text](schema.png)
 
 Основные запросы:
 

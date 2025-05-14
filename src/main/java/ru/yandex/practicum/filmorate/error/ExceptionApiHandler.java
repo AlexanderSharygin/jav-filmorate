@@ -70,4 +70,12 @@ public class ExceptionApiHandler {
         log.warn(message);
         throw new ru.yandex.practicum.filmorate.exception.BadRequestException("Validation exception");
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleOtherExceptions(final Throwable e) {
+        log.warn(e.getMessage());
+
+        return new ErrorResponse(e.getMessage(), "Unknown error");
+    }
 }
