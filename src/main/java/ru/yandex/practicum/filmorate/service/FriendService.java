@@ -43,15 +43,6 @@ public class FriendService {
         return true;
     }
 
-    public boolean confirmFriends(long userId, long friendId) {
-        Friend friend = friendRepository
-                .find(userId, friendId)
-                .orElseThrow(() -> new NotExistException("User with id " + friendId + "is not a friend for " + userId));
-        friendRepository.confirm(friend.getUserId(), friend.getFriendId());
-
-        return true;
-    }
-
     public boolean removeFriend(long userId, long friendId) {
         userRepository.findById(userId).orElseThrow(() -> new NotExistException("User are not exist in the DB"));
         userRepository.findById(friendId).orElseThrow(() -> new NotExistException("User are not exist in the DB"));

@@ -1,8 +1,3 @@
-insert into FRIEND_STATUSES (STATUS_ID, NAME)
-values (1, 'Confirmed');
-insert into FRIEND_STATUSES (STATUS_ID, NAME)
-values (2, 'Requested');
-
 insert into GENRES (GENRE_ID, NAME)
 values (1, 'Комедия');
 insert into GENRES (GENRE_ID, NAME)

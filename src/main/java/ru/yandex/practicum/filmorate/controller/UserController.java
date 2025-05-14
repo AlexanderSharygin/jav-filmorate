@@ -46,11 +46,6 @@ public class UserController {
         return friendService.addFriend(userId, friendId);
     }
 
-    @PutMapping(value = "/users/{id}/friends/{friendId}/confirm")
-    public boolean confirmFriend(@PathVariable("id") long userId, @PathVariable long friendId) {
-        return friendService.confirmFriends(userId, friendId);
-    }
-
     @DeleteMapping(value = "/users/{id}/friends/{friendId}")
     public boolean removeFriend(@PathVariable("id") long userId, @PathVariable long friendId) {
         return friendService.removeFriend(userId, friendId);

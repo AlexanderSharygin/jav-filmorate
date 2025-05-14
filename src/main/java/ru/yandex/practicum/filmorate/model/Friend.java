@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
@@ -8,14 +9,12 @@ import lombok.NonNull;
 @AllArgsConstructor
 public class Friend {
 
-    @NonNull
+    @NotNull
     Long userId;
 
-    @NonNull
+    @NotNull
     Long friendId;
 
-    @NonNull
-    Integer statusId;
 
     public Friend() {
     }

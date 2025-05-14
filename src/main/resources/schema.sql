@@ -1,15 +1,3 @@
-create table if not exists FRIEND_STATUSES
-(
-    STATUS_ID
-        BIGINT
-        auto_increment
-        primary
-            key,
-    NAME
-        CHARACTER
-            VARYING(50) not null
-);
-
 create table if not exists GENRES
 (
     GENRE_ID
@@ -155,10 +143,6 @@ create table if not exists USERS_USERS
         BIGINT
         not
             null,
-    STATUS_ID
-        BIGINT
-        not
-            null,
     constraint
         USERS_USERS_PK2
         primary
@@ -179,13 +163,6 @@ create table if not exists USERS_USERS
             (
              FRIEND_ID
                 ) references USERS
-            on update cascade
-            on delete cascade,
-    constraint USERS_USERS_FK3
-        foreign key
-            (
-             STATUS_ID
-                ) references FRIEND_STATUSES
             on update cascade
             on delete cascade,
     check

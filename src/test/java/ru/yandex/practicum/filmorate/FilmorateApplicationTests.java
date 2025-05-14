@@ -108,12 +108,6 @@ class FilmorateApplicationTests {
         assertDoesNotThrow(() -> friendRepository.add(1L, 2L));
     }
 
-    @Test
-    @Order(6)
-    @AutoConfigureTestDatabase
-    public void testConfirmFriend() {
-        assertDoesNotThrow(() -> friendRepository.confirm(1L, 2L));
-    }
 
     @Test
     @Order(7)
